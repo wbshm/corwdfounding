@@ -3,6 +3,7 @@ package com.local.crowd;
 
 import com.local.crowd.entity.Admin;
 import com.local.crowd.mapper.AdminMapper;
+import com.local.crowd.service.api.AdminService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import java.sql.SQLException;
 
 // 在类上标记必要的注解，Spring整合Junit
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-persist-mybatis.xml"})
+@ContextConfiguration(locations = {"classpath:spring-persist-mybatis.xml", "classpath:spring-persist-tx.xml"})
 public class CrowdTest {
     @Autowired
     private DataSource dataSource;
@@ -25,8 +26,11 @@ public class CrowdTest {
     @Autowired
     private AdminMapper adminMapper;
 
+    @Autowired
+    private AdminService adminService;
+
     @Test
-    public void testLog(){
+    public void testLog() {
         //1. 获取Logger对象，这里传入的Class对象就是当前打印日志的类
         Logger logger = LoggerFactory.getLogger(CrowdTest.class);
 
@@ -34,7 +38,7 @@ public class CrowdTest {
         logger.debug("hello debug");
         logger.info("hello info");
         logger.warn("hello warn");
-        logger.error("hello warn");
+        logger.error("hello error");
     }
 
     @Test
@@ -48,5 +52,11 @@ public class CrowdTest {
     public void testConnection() throws SQLException {
         Connection connection = dataSource.getConnection();
         System.out.println(connection);
+    }
+
+    @Test
+    public void testTx() {
+        Admin admin = new Admin(null, "nihao", "我好", "(((", "123@qq.com", null);
+        adminService.saveAdmin(admin);
     }
 }
