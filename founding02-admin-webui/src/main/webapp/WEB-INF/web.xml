@@ -41,4 +41,32 @@
         <filter-name>CharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <!-- 配置拦截器 -->
+    <servlet>
+        <servlet-name>springDispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-web-mvc.xml</param-value>
+        </init-param>
+        <!-- servlet 默认生命周期中，创建对象是在第一次接收到请求时 -->
+        <!-- 而DispatcherServlet 创建对象后有大量的“框架初始化”工作，不适合在第一次其你去来做 -->
+        <!-- 设置load-on-startup 就是为了rangDispatcherServlet在Web引用启动时创建对象，初始化 ,值越小越早-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springDispatcherServlet</servlet-name>
+        <!-- url-pattern: /表示拦截所有请求 -->
+        <!--<url-pattern>/</url-pattern>-->
+        <!-- url-pattern 配置请求扩展名 -->
+        <!-- 优点：xxx.css、xxx.js、等静态资源完全不经过SpringMVC，不需要特殊处理 -->
+        <!-- 优点：可以实现伪静态效果
+                伪静态： 给黑客入侵增加难度。
+                伪静态： 有利于SEO的优化。-->
+        <!-- 缺点： 不符合RESTFul风格 -->
+        <url-pattern>*.html</url-pattern>
+        <!-- 如果一个Ajax请求扩展名是html，但是实际返回给浏览器是json数据，二者不匹配，就会出现406错误。-->
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
 </web-app>

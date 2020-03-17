@@ -2,6 +2,8 @@ package com.local.crowd.service.api;
 
 import com.local.crowd.entity.Admin;
 
+import java.util.List;
+
 public interface AdminService {
 
     /**
@@ -10,4 +12,6 @@ public interface AdminService {
      * @return
      */
     int saveAdmin(Admin admin);
+
+    List<Admin> getAll();
 }
