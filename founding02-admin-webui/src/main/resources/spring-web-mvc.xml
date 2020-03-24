@@ -18,4 +18,25 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <!--
+    @RequestMapping("xxx/xxx.html")
+    public String target(){
+        return "target"
+    }
+    -->
+    <mvc:view-controller path="/xxx/xxx.html" view-name="target"/>
+
+    <!-- 基于XML的异常 映射 -->
+    <bean id="simpleMappingExceptionResolver"
+          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <!-- 配置异常类型和具体视图页面的对应关系 -->
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">system-error</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 配置ViewController, 直接把请求地址和试图关联起来，不必谢handler方法 -->
+    <mvc:view-controller path="/admin/do/login/page.html" view-name="admin-login"/>
 </beans>
